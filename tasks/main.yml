@@ -36,7 +36,7 @@
     - include_tasks: configure-dns.yml
       with_items: "{{ dnsconfigs }}"
     - name: Configure network manager settings
-      copy:
+      template:
         src: NetworkManager.conf
         dest: /etc/NetworkManager/NetworkManager.conf
       notify:
