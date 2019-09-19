@@ -1,0 +1,19 @@
+---
+- name: Reload nmcli
+  shell: |
+     sleep 2 && nmcli connection reload
+  async: 1000
+  poll: 0
+  register: nmcli_reload_reg
+
+- name: Wait for network to come back
+  wait_for_connection:
+    delay: 2
+    timeout: 20
+
+- name: Ensure nmcli reload finished successfully
+  async_status:
+    jid: "{{ nmcli_reload_reg.ansible_job_id }}"
+  register: nmcli_reload_reg_result
+  until: nmcli_reload_reg_result.finished
+  retries: 2

@@ -1,0 +1,4 @@
+---
+network_manager_dns: dnsmasq
+dnsconfigs: []
+netconfigs: []

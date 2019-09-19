@@ -1,0 +1,45 @@
+---
+- name: Install Network Manager
+  package:
+    name: NetworkManager
+  when: disable_networkmanager is undefined or not disable_networkmanager
+- name: Disable Network Manager
+  service:
+    name: NetworkManager
+    state: stopped
+    enabled: no
+  when: disable_networkmanager is defined and disable_networkmanager
+- name: Enable Network Manager
+  service:
+    name: NetworkManager
+    state: started
+    enabled: yes
+  when: disable_networkmanager is undefined or not disable_networkmanager
+- fail:
+    msg: "'auto' net_conf no longer supported"
+  when: net_conf is defined and net_conf == 'auto'
+- block:
+    - name: Disable cloud-init pre
+      file:
+        state: directory
+        path: /etc/cloud
+    - name: Disable cloud-init
+      file:
+        state: touch
+        path: /etc/cloud/cloud-init.disabled
+    - name: fix /etc/hosts
+      template:
+        src: etc_hosts
+        dest: /etc/hosts
+    - include_tasks: configure-interface.yml
+      with_items: "{{ netconfigs }}"
+    - include_tasks: configure-dns.yml
+      with_items: "{{ dnsconfigs }}"
+    - name: Configure network manager settings
+      copy:
+        src: NetworkManager.conf
+        dest: /etc/NetworkManager/NetworkManager.conf
+      notify:
+        - reload nmcli
+    - meta: flush_handlers
+  when: net_conf is defined and net_conf == 'explicit'

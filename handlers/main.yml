@@ -1,0 +1,5 @@
+---
+- name: reload network
+  include_tasks: reboot.yml
+- name: reload nmcli
+  include_tasks: nmcli-reload.yml
