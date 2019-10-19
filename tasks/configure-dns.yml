@@ -1,5 +1,5 @@
 ---
 - name: Configure Network Manager dnsmasq
   copy:
-    content: "server=/{{ item.server }}/{{ item.ip }}"
-    dest: /etc/NetworkManager/dnsmasq.d/{{ item.server }}.conf
+    content: "{{ item.content }}"
+    dest: /etc/NetworkManager/dnsmasq.d/{{ item.name }}.conf
