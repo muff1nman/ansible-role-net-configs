@@ -31,6 +31,12 @@
       template:
         src: etc_hosts
         dest: /etc/hosts
+    - include_role:
+        name: firewalld
+      when: "firewalld_enable is undefined or firewalld_enable"
+    - include_role:
+        name: disable-firewalld
+      when: "firewalld_enable is defined and not firewalld_enable"
     - include_tasks: configure-interface.yml
       with_items: "{{ netconfigs }}"
     - include_tasks: configure-dns.yml
