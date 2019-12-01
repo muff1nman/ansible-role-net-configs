@@ -15,6 +15,16 @@
     state: started
     enabled: yes
   when: disable_networkmanager is undefined or not disable_networkmanager
+- name: Install nmcli remote tools
+  package:
+    name: NetworkManager-glib
+  when: nmcli_remove_conns is defined
+- name: Remove interface
+  nmcli:
+    conn_name: "{{ item }}"
+    state: absent
+  with_items: "{{ nmcli_remove_conns }}"
+  when: nmcli_remove_conns is defined
 - fail:
     msg: "'auto' net_conf no longer supported"
   when: net_conf is defined and net_conf == 'auto'
