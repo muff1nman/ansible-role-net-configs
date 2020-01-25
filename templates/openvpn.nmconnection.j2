@@ -12,15 +12,19 @@ ca=/etc/pki/openvpn/{{ item.name }}-ca.pem
 cert=/etc/pki/openvpn/{{ item.name }}-cert.pem
 cert-pass-flags=0
 cipher=AES-256-GCM
+{% if item.username is defined %}
 connection-type=password-tls
+username={{ item.username }}
+password-flags=1
+{% else %}
+connection-type=tls
+{% endif %}
 dev=tun
 key=/etc/pki/openvpn/{{ item.name }}-key.pem
-password-flags=1
 remote={{ item.remote }}
 remote-cert-tls=server
 ta=/etc/pki/openvpn/{{ item.name }}-tls-auth.pem
 ta-dir=1
-username={{ item.username }}
 verify-x509-name=name:{{ item.x509name }}
 service-type=org.freedesktop.NetworkManager.openvpn
 
