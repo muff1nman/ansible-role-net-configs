@@ -1,0 +1,25 @@
+---
+- name: Copy over network manager connection
+  template:
+    src: openvpn.nmconnection.j2
+    dest: "/etc/NetworkManager/system-connections/{{ item.name }}-openvpn.nmconnection"
+    mode: 0600
+  notify:
+    - 'reload nmcli'
+  loop: "{{ openvpn_connections }}"
+
+- name: Create certs directory
+  file:
+    state: directory
+    path: /etc/pki/openvpn
+
+- name: Copy over certs
+  copy:
+    content: "{{ item.0[item.1] }}"
+    dest: "/etc/pki/openvpn/{{ item.0.name }}-{{ item.1 }}.pem"
+    mode: 0600
+    seuser: system_u
+    serole: object_r
+    setype: cert_t
+    selevel: s0
+  loop: "{{ openvpn_connections | product(openvpn_files) | list }}"

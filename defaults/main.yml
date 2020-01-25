@@ -2,3 +2,9 @@
 network_manager_dns: dnsmasq
 dnsconfigs: []
 netconfigs: []
+openvpn_files:
+- ca
+- cert
+- key
+- tls-auth
+openvpn_connections: []

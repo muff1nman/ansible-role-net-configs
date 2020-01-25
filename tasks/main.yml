@@ -60,3 +60,5 @@
       when: disable_networkmanager is undefined or not disable_networkmanager
     - meta: flush_handlers
   when: net_conf is defined and net_conf == 'explicit'
+- include_tasks: openvpn.yml
+  when: disable_networkmanager is undefined or not disable_networkmanager
