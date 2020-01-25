@@ -2,7 +2,7 @@
 id={{ item.name }} openvpn
 uuid={{ item.uuid }}
 type=vpn
-autoconnect=false
+autoconnect={{ item.auto | default('false') }}
 permissions=
 timestamp=
 
