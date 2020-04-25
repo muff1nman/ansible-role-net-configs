@@ -3,12 +3,18 @@
   package:
     name: NetworkManager
   when: disable_networkmanager is undefined or not disable_networkmanager
+- name: Collect package facts
+  package_facts:
+    manager: "auto"
 - name: Disable Network Manager
   service:
     name: NetworkManager
     state: stopped
     enabled: no
-  when: disable_networkmanager is defined and disable_networkmanager
+  when:
+    - disable_networkmanager is defined
+    - disable_networkmanager
+    - "'NetworkManager' in ansible_facts.packages"
 - name: Enable Network Manager
   service:
     name: NetworkManager
