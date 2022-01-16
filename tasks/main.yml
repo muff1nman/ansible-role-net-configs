@@ -55,6 +55,8 @@
       when: "firewalld_enable is defined and not firewalld_enable"
     - include_tasks: configure-interface.yml
       with_items: "{{ netconfigs }}"
+    - include_tasks: configure-nm-connection.yml
+      with_items: "{{ nm_configs | default({}) | dict2items }}"
     - include_tasks: configure-dns.yml
       with_items: "{{ dnsconfigs }}"
     - name: Configure network manager settings

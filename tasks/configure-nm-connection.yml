@@ -1,0 +1,8 @@
+---
+- name: Copy over network manager connection
+  copy:
+    content: "{{ item.value }}"
+    dest: "/etc/NetworkManager/system-connections/{{ item.key }}.nmconnection"
+    mode: 0600
+  notify:
+    - 'reload nmcli'
