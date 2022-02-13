@@ -1,5 +1,5 @@
 ---
-network_manager_dns: dnsmasq
+network_manager_dns: default
 dnsconfigs: []
 netconfigs: []
 openvpn_files:
