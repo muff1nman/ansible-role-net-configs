@@ -12,6 +12,8 @@
   file:
     state: directory
     path: /etc/pki/openvpn
+  when:
+    - openvpn_connections | length > 0
 
 - name: Copy over certs
   copy:
